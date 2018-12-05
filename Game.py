@@ -13,6 +13,7 @@ import random
 
 class Game(object):
     """
+    Class that contains all code required to run cocos2d
     """
 
     default_title = "Flappy Wyvern"
@@ -21,7 +22,9 @@ class Game(object):
 
     #############################################################################
     def __init__(self):
-        """ """
+        """ 
+        Inizalizes cocos window
+        """
         super(Game, self).__init__()
 
         self.player_name = "Nobody"
@@ -51,7 +54,9 @@ class Game(object):
 
     #############################################################################
     def run(self, host=None, port=8080):
-        """ """
+        """ 
+        Code to connect 
+        """
         self.host = host
         self.port = port
         cocos.director.director.set_show_FPS(True)
@@ -59,7 +64,9 @@ class Game(object):
 
     #############################################################################
     def on_join_game(self):
-        """ """
+        """ 
+        Called on joining any game
+        """
         playLayer = ClientPlayLayer.ClientPlayLayer(
             self.host, self.port, self.player_name)
         cocos.director.director.replace(FadeTRTransition(
@@ -67,18 +74,24 @@ class Game(object):
 
     #############################################################################
     def on_host_game(self):
-        """ """
+        """ 
+        Called when set to host a game
+        """
         cocos.director.director.replace(FadeTRTransition(
             cocos.scene.Scene(ServerPlayLayer.ServerPlayLayer(self.port)), 2))
 
     #############################################################################
     def on_name(self, value):
-        """ """
+        """ 
+        Sets up the players name
+        """
         self.player_name = value
 
     #############################################################################
     def on_quit(self):
-        """ """
+        """ 
+        Runs on closing of the cocos window
+        """
         pyglet.app.exit()
 
 
