@@ -8,6 +8,7 @@ import pyglet
 
 class UILayer(cocos.layer.ColorLayer):
     """
+    Controls the user interface of the cocos window
     """
 
     def __init__(self):
@@ -19,11 +20,14 @@ class UILayer(cocos.layer.ColorLayer):
 
 class IntroMenu(cocos.menu.Menu):
     """
+    Class to control the start screen
     """
 
     #############################################################################
     def __init__(self, game):
-        """ """
+        """ 
+        Creates the start screen for the game
+        """
         super(IntroMenu, self).__init__()
         self.game = game
         self.font_item = {

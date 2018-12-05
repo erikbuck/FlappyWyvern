@@ -9,6 +9,9 @@ import Map
 
 
 class Wyvern(cocos.layer.Layer):
+    """
+    Class that cotains the animation data for the wyvern sprite and physics
+    """
     gravity = -9.8 / 60
     secondsPerFrame = 0.075
 
@@ -57,16 +60,25 @@ class Wyvern(cocos.layer.Layer):
 
     #############################################################################
     def flap(self):
+        """
+        Increases vertical and horizontal velocity of player wyvern 
+        """
         if not self.isDead:
             self.verticalVelocity += 3
             self.horizontalVelocity = min(0.3, self.horizontalVelocity + 0.02)
 
     #############################################################################
     def respawn(self):
+        """
+        Respawn a wyvern if it is dead
+        """
         self.isDead = False
 
     #############################################################################
     def update(self):
+        """
+        Moves the wyvern and updates internal status 
+        """
         self.verticalVelocity = self.verticalVelocity + Wyvern.gravity
         self.altitude += self.verticalVelocity
 
