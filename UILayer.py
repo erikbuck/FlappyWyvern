@@ -40,13 +40,9 @@ class IntroMenu(cocos.menu.Menu):
         }
 
         l = []
-        l.append(cocos.menu.MenuItem('Join Game',
-                                     self.game.on_join_game))
-        l.append(cocos.menu.MenuItem('Host Game',
-                                     self.game.on_host_game))
-        l.append(cocos.menu.EntryMenuItem('Name:',
-                                          self.game.on_name,
-                                          self.game.player_name))
+        l.append(cocos.menu.MenuItem('Join Game', self.game.on_join_game))
+        l.append(cocos.menu.MenuItem('Host Game', self.game.on_host_game))
+        l.append(cocos.menu.EntryMenuItem('Name:', self.game.on_name, self.game.player_name))
         l.append(cocos.menu.MenuItem('Quit', self.game.on_quit))
 
         self.create_menu(l)

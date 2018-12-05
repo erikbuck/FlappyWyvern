@@ -56,8 +56,8 @@ class ChatServer(Server):
         self.SendPlayers()
 
     def SendPlayers(self):
-        self.SendToAll({"action": "players", "players": [
-                       p.nickname for p in self.players]})
+        self.SendToAll({"action": "players", "players":
+                        [p.nickname for p in self.players]})
 
     def SendToAll(self, data):
         """
