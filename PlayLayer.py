@@ -10,6 +10,7 @@ import Map
 
 class KeyboardInputLayer(cocos.layer.Layer):
     """
+    Class that contains keyboard control and listening
     """
 
     # You need to tell cocos that your layer is for handling input!
@@ -18,22 +19,30 @@ class KeyboardInputLayer(cocos.layer.Layer):
     is_event_handler = True
 
     def __init__(self):
-        """ """
+        """ 
+        Initalizes the keyboard listener
+        """
         super(KeyboardInputLayer, self).__init__()
         self.keys_being_pressed = set()
 
     def on_key_press(self, key, modifiers):
-        """ """
+        """ 
+        Adds new key to set when a new key is pressed
+        """
         self.keys_being_pressed.add(key)
 
     def on_key_release(self, key, modifiers):
-        """ """
+        """ 
+        Removes key from set when it is released
+        """
         if key in self.keys_being_pressed:
             self.keys_being_pressed.remove(key)
 
 
 class GroundLayer(cocos.layer.Layer):
-    """ """
+    """ 
+    Class that controls the sprite for the floor
+    """
     ground_image = pyglet.resource.image('images/dirtsand2.png')
 
     def __init__(self):
@@ -51,7 +60,14 @@ class PlayLayerAction(cocos.actions.Action):
     """
 
     def step(self, dt):
-        """ """
+        """ 
+        Steps the simulation.
+
+        Parameters
+        ----------
+        dt: float
+            The ammount of time passed since last simulation step
+        """
         self.target.update(dt)
 
 ##########################################################################################
@@ -59,6 +75,9 @@ class PlayLayerAction(cocos.actions.Action):
 
 
 class PlayLayer(KeyboardInputLayer):
+    """
+    Controls the rendering of the game
+    """
     rubbleWallSpritesheet = pyglet.resource.image(
         'images/TileObjectsRubbleWalls.png')
     rubbleWallGrid = Image.ImageGrid(rubbleWallSpritesheet, 8, 8)
@@ -103,6 +122,9 @@ class PlayLayer(KeyboardInputLayer):
     #############################################################################
     @staticmethod
     def addWyvern(id, wyvern):
+        """
+        Adds new player character to set of players
+        """
         PlayLayer.idToWyvernTable[id] = wyvern
         print("Added wyvern {}\n".format(id))
 
@@ -116,6 +138,14 @@ class PlayLayer(KeyboardInputLayer):
 
     #############################################################################
     def update(self, dt):
+        """
+        Updates the positon of all sprites
+
+        Parameters
+        ----------
+        dt: float
+            The time since the simulation last ran
+        """
         for id in PlayLayer.idToWyvernTable:
             currentWyvern = PlayLayer.idToWyvernTable[id]
             if currentWyvern.parent == None:

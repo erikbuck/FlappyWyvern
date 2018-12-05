@@ -55,6 +55,7 @@ obstacleInfos = [
 
 class Map(cocos.layer.Layer):
     """
+    Class that controls map generation
     """
 
     #############################################################################

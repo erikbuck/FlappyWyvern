@@ -60,6 +60,9 @@ class ChatServer(Server):
                        p.nickname for p in self.players]})
 
     def SendToAll(self, data):
+        """
+        Sends data to all players
+        """
         [p.Send(data) for p in self.players]
 
     def Launch(self):
