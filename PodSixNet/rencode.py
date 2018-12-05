@@ -1,7 +1,7 @@
 # https://github.com/aresch/rencode
 #
 # This is tweaked to add native tuple type
-# 
+#
 # Original bencode module by Petru Paler, et al.
 #
 # Modifications by Connelly Barnes:
@@ -204,12 +204,14 @@ def decode_list(x, f):
         r.append(v)
     return (r, f + 1)
 
+
 def decode_tuple(x, f):
     r, f = [], f + 1
     while x[f:f + 1] != CHR_TERM:
         v, f = decode_func[x[f:f + 1]](x, f)
         r.append(v)
     return (tuple(r), f + 1)
+
 
 def decode_dict(x, f):
     r, f = {}, f + 1
@@ -229,6 +231,7 @@ def decode_false(x, f):
 
 def decode_none(x, f):
     return (None, f + 1)
+
 
 decode_func = {}
 decode_func[b'0'] = decode_string
@@ -267,6 +270,7 @@ def make_fixed_length_string_decoders():
     for i in range(STR_FIXED_COUNT):
         decode_func[int2byte(STR_FIXED_START + i)] = make_decoder(i)
 
+
 make_fixed_length_string_decoders()
 
 
@@ -282,7 +286,9 @@ def make_fixed_length_list_decoders():
     for i in range(LIST_FIXED_COUNT):
         decode_func[int2byte(LIST_FIXED_START + i)] = make_decoder(i)
 
+
 make_fixed_length_list_decoders()
+
 
 def make_fixed_length_tuple_decoders():
     def make_decoder(slen):
@@ -296,7 +302,9 @@ def make_fixed_length_tuple_decoders():
     for i in range(TUPLE_FIXED_COUNT):
         decode_func[int2byte(TUPLE_FIXED_START + i)] = make_decoder(i)
 
+
 make_fixed_length_tuple_decoders()
+
 
 def make_fixed_length_int_decoders():
     def make_decoder(j):
@@ -307,6 +315,7 @@ def make_fixed_length_int_decoders():
         decode_func[int2byte(INT_POS_FIXED_START + i)] = make_decoder(i)
     for i in range(INT_NEG_FIXED_COUNT):
         decode_func[int2byte(INT_NEG_FIXED_START + i)] = make_decoder(-1 - i)
+
 
 make_fixed_length_int_decoders()
 
@@ -322,6 +331,7 @@ def make_fixed_length_dict_decoders():
         return f
     for i in range(DICT_FIXED_COUNT):
         decode_func[int2byte(DICT_FIXED_START + i)] = make_decoder(i)
+
 
 make_fixed_length_dict_decoders()
 
@@ -402,6 +412,7 @@ def encode_list(x, r):
             encode_func[type(i)](i, r)
         r.append(CHR_TERM)
 
+
 def encode_tuple(x, r):
     if len(x) < TUPLE_FIXED_COUNT:
         r.append(int2byte(TUPLE_FIXED_START + len(x)))
@@ -412,6 +423,7 @@ def encode_tuple(x, r):
         for i in x:
             encode_func[type(i)](i, r)
         r.append(CHR_TERM)
+
 
 def encode_dict(x, r):
     if len(x) < DICT_FIXED_COUNT:
@@ -425,6 +437,7 @@ def encode_dict(x, r):
             encode_func[type(k)](k, r)
             encode_func[type(v)](v, r)
         r.append(CHR_TERM)
+
 
 encode_func = {}
 encode_func[int] = encode_int
@@ -463,18 +476,22 @@ def test():
     f2 = struct.unpack('!f', struct.pack('!f', 29.3))[0]
     f3 = struct.unpack('!f', struct.pack('!f', -0.6))[0]
     ld = (({b'a': 15, b'bb': f1, b'ccc': f2, b'': (f3, (), False, True, b'')}, (b'a', 10**20),
-           tuple(range(-100000, 100000)), b'b' * 31, b'b' * 62, b'b' * 64, 2**30, 2**33, 2**62,
+           tuple(range(-100000, 100000)), b'b' * 31, b'b' *
+           62, b'b' * 64, 2**30, 2**33, 2**62,
            2**64, 2**30, 2**33, 2**62, 2**64, False, False, True, -1, 2, 0),)
     assert loads(dumps(ld)) == ld
     d = dict(zip(range(-100000, 100000), range(-100000, 100000)))
-    d.update({b'a': 20, 20: 40, 40: 41, f1: f2, f2: f3, f3: False, False: True, True: False})
+    d.update({b'a': 20, 20: 40, 40: 41, f1: f2, f2: f3,
+              f3: False, False: True, True: False})
     ld = (d, {}, {5: 6}, {7: 7, True: 8}, {9: 10, 22: 39, 49: 50, 44: b''})
     assert loads(dumps(ld)) == ld
-    ld = (b'', b'a' * 10, b'a' * 100, b'a' * 1000, b'a' * 10000, b'a' * 100000, b'a' * 1000000, b'a' * 10000000)
+    ld = (b'', b'a' * 10, b'a' * 100, b'a' * 1000, b'a' *
+          10000, b'a' * 100000, b'a' * 1000000, b'a' * 10000000)
     assert loads(dumps(ld)) == ld
     ld = tuple([dict(zip(range(n), range(n))) for n in range(100)]) + (b'b',)
     assert loads(dumps(ld)) == ld
-    ld = tuple([dict(zip(range(n), range(-n, 0))) for n in range(100)]) + (b'b',)
+    ld = tuple([dict(zip(range(n), range(-n, 0)))
+                for n in range(100)]) + (b'b',)
     assert loads(dumps(ld)) == ld
     ld = tuple([tuple(range(n)) for n in range(100)]) + (b'b',)
     assert loads(dumps(ld)) == ld
@@ -488,6 +505,8 @@ def test():
     assert 1e-10 < abs(loads(dumps(1.1, 32)) - 1.1) < 1e-6
     assert abs(loads(dumps(1.1, 64)) - 1.1) < 1e-12
     assert loads(dumps("Hello World!!"), decode_utf8=True)
+
+
 try:
     import psyco
     psyco.bind(dumps)

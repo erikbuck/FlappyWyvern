@@ -15,6 +15,6 @@ if float(version[:3]) < 2.6:
         self.ac_in_buffer = b''
         self.ac_out_buffer = b''
         self.producer_fifo = asynchat.fifo()
-        asyncore.dispatcher.__init__ (self, sock=conn, map=map)
-        
+        asyncore.dispatcher.__init__(self, sock=conn, map=map)
+
     #asynchat.async_chat.__init__ = asynchat_monkey_init
