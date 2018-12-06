@@ -7,7 +7,7 @@ import Map
 ##########################################################################################
 ##
 class Wyvern(cocos.layer.Layer):
-   gravity = -9.8 / 60
+   gravity = -9.8
    secondsPerFrame = 0.075
 
    # Create a texture atlas from the individual frames of the wyvern animations
@@ -42,10 +42,8 @@ class Wyvern(cocos.layer.Layer):
       self.verticalVelocity = 0
       self.horizontalVelocity = 0
       self.sprite = cocos.sprite.Sprite(Wyvern.animation['hover'])
-      #self.add(self.sprite, z=4)
       self.sprite.position = 200, 80 + self.altitude
       self.sprites = cocos.sprite.Sprite(Wyvern.animations['hover'])
-      #self.add(self.sprites, z=3)
       self.sprites.position = 200,100
       self.mapPosition = (4, 0, 0)
       self.animationName = 'hover'
@@ -64,8 +62,8 @@ class Wyvern(cocos.layer.Layer):
       self.isDead = False
       
    #############################################################################
-   def update(self):
-      self.verticalVelocity = self.verticalVelocity + Wyvern.gravity
+   def update(self, dt):
+      self.verticalVelocity = self.verticalVelocity + Wyvern.gravity * dt
       self.altitude += self.verticalVelocity
 
       if self.altitude <= 0:
@@ -82,7 +80,6 @@ class Wyvern(cocos.layer.Layer):
       self.mapPosition = (x, y, z)
       self.sprite.position = Map.Map.positionForMapPosition(x, y, z)
       self.sprites.position = Map.Map.positionForMapPosition(x, 0, z)
-      self.sprites.opacity = 28
 	  
       if self.isDead:
          if self.animationName != 'die':

@@ -35,10 +35,12 @@ class GroundLayer(cocos.layer.Layer):
 
   def __init__(self):
     super( GroundLayer, self ).__init__()
+    self.batch = cocos.batch.BatchNode()
+    self.add(self.batch)
     for i in range(0,100):
       gsprite = cocos.sprite.Sprite(GroundLayer.ground_image)
       gsprite.position = 128 + i * 256, i * 128
-      self.add(gsprite, z=0)
+      self.batch.add(gsprite, z=0)
 
 
 ##########################################################################################
@@ -77,6 +79,7 @@ class PlayLayer(KeyboardInputLayer):
       self.do(PlayLayerAction())
 
       self.obstacleDict = {}
+      
       for obstacleInfo in Map.obstacleInfos:
          obstacle = cocos.sprite.Sprite(PlayLayer.rubbleWallTextures[obstacleInfo['id']])
          mapPosition = (
@@ -85,9 +88,16 @@ class PlayLayer(KeyboardInputLayer):
                obstacleInfo['z']
          )
          obstacle.position = Map.Map.positionForMapPosition(
-            mapPosition[0], mapPosition[1], mapPosition[2])
-         self.obstacleLayer.add(obstacle, z=Map.Map.zForMapPosition(mapPosition[0], mapPosition[1], mapPosition[2]))
+               mapPosition[0], mapPosition[1], mapPosition[2])
+         self.obstacleLayer.add(obstacle, z=Map.Map.zForMapPosition(
+               mapPosition[0], mapPosition[1], mapPosition[2]))
          self.obstacleDict[mapPosition] = True
+       
+      self.allWyvernsBatch = cocos.batch.BatchNode()
+      self.obstacleLayer.add(self.allWyvernsBatch, z=66)
+      
+      self.allWyvernsShadowsBatch = cocos.batch.BatchNode()
+      self.obstacleLayer.add(self.allWyvernsShadowsBatch)
       
       PlayLayer.addWyvern(self.getOwnID(), self.wyvern)   
 
@@ -110,9 +120,9 @@ class PlayLayer(KeyboardInputLayer):
       for id in PlayLayer.idToWyvernTable:
          currentWyvern = PlayLayer.idToWyvernTable[id]
          if currentWyvern.parent == None:
-            self.obstacleLayer.add(currentWyvern.sprite, z=66)
-            self.obstacleLayer.add(currentWyvern.sprites)
-         currentWyvern.update()
+            self.obstacleLayer.add(currentWyvern.sprite)
+            self.allWyvernsShadowsBatch.add(currentWyvern.sprites)
+         currentWyvern.update(dt)
       self.groundOffsetX = -self.wyvern.sprite.position[0] + 200
       self.groundOffsetY = -self.wyvern.sprite.position[1] + 80 + self.wyvern.altitude
       self.groundLayer.position = self.groundOffsetX, self.groundOffsetY
