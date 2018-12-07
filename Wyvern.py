@@ -41,6 +41,7 @@ class Wyvern(cocos.layer.Layer):
       self.altitude = 0
       self.verticalVelocity = 0
       self.horizontalVelocity = 0
+      self.lateralVelocity = 0
       self.sprite = cocos.sprite.Sprite(Wyvern.animation['hover'])
       self.sprite.position = 200, 80 + self.altitude
       self.sprites = cocos.sprite.Sprite(Wyvern.animations['hover'])
@@ -50,6 +51,16 @@ class Wyvern(cocos.layer.Layer):
       self.sprite.image = Wyvern.animation[self.animationName]
       self.sprites.image = Wyvern.animations[self.animationName]
       self.isDead = False
+      
+   #############################################################################
+   def moveLeft(self):
+      if not self.isDead:
+         self.lateralVelocity -= 0.1
+      
+   #############################################################################
+   def moveRight(self):
+      if not self.isDead:
+         self.lateralVelocity += 0.1
       
    #############################################################################
    def flap(self):
@@ -75,6 +86,8 @@ class Wyvern(cocos.layer.Layer):
          self.verticalVelocity = 0
 
       x,y,z = self.mapPosition
+      x = min(max(-1.0, x + self.lateralVelocity), 6.0)
+      self.lateralVelocity *= 0.9 # make lateralVelocity decay
       y = self.altitude / 96
       z += self.horizontalVelocity
       self.mapPosition = (x, y, z)

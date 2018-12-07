@@ -153,6 +153,10 @@ class PlayLayer(KeyboardInputLayer):
       super(PlayLayer, self).on_key_press(key, modifiers)
       if pyglet.window.key.SPACE in self.keys_being_pressed:
          self.wyvern.flap()
+      if pyglet.window.key.LEFT in self.keys_being_pressed:
+          self.wyvern.moveLeft()
+      if pyglet.window.key.RIGHT in self.keys_being_pressed:
+          self.wyvern.moveRight()
 
    #############################################################################
    def on_key_release(self, key, modifiers):
