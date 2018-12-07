@@ -11,30 +11,41 @@ class Wyvern(cocos.layer.Layer):
    secondsPerFrame = 0.075
 
    # Create a texture atlas from the individual frames of the wyvern animations
+   # All Textures
+   wyvernBin = pyglet.image.atlas.TextureBin(texture_width=256, texture_height=256)
+   
    # Wyvern textures
-   wyvernBin = pyglet.image.atlas.TextureBin()
    wyvernTextures = []
    for i in range(0,24):
       name = "images/wyvernNE{}.png".format(i)
-      wyvernTextures.append(wyvernBin.add(pyglet.image.load(name)))
+      wyvernTextures.append(pyglet.image.load(name))
 
    # Shadow textures
    wyvernsTextures = []
    for i in range(0,24):
       names = "images/wyvernsNE{}.png".format(i)
-      wyvernsTextures.append(wyvernBin.add(pyglet.image.load(names)))
+      wyvernsTextures.append(pyglet.image.load(names))
 
    #############################################################################
+   # Normal frames
    animation = {
      'hover' : Anim.from_image_sequence(wyvernTextures[0:8], secondsPerFrame, loop=True),
      'fly' : Anim.from_image_sequence(wyvernTextures[8:16], secondsPerFrame, loop=True),
      'die' : Anim.from_image_sequence(wyvernTextures[16:24], secondsPerFrame, loop=False),
    }
+
+   for key in animation.keys():
+      animation[key].add_to_texture_bin(wyvernBin)
+
+   # Shadow frames
    animations = {
      'hover' : Anim.from_image_sequence(wyvernsTextures[0:8], secondsPerFrame, loop=True),
      'fly' : Anim.from_image_sequence(wyvernsTextures[8:16], secondsPerFrame, loop=True),
      'die' : Anim.from_image_sequence(wyvernsTextures[16:24], secondsPerFrame, loop=False),
    }
+
+   for key in animations.keys():
+      animations[key].add_to_texture_bin(wyvernBin)
    
    #############################################################################
    def __init__(self):
