@@ -145,7 +145,7 @@ class PlayLayer(KeyboardInputLayer):
                self.wyvern.mapPosition[1],
                self.wyvern.mapPosition[2] - 1.5)
             self.horizontalVelocity = -0.02
-            self.do(cocos.actions.Delay(1) + cocos.actions.CallFunc(self.respawn))
+            self.do(cocos.actions.Delay(3) + cocos.actions.CallFunc(self.respawn))
             
    #############################################################################
    def on_key_press(self, key, modifiers):
