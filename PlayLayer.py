@@ -55,6 +55,16 @@ class PlayLayerAction(cocos.actions.Action):
 ##########################################################################################
 #
 class PlayLayer(KeyboardInputLayer):
+   explosionSmall_image = pyglet.resource.image('images/explosionSmall.png')
+   explosionSmall_grid = pyglet.image.ImageGrid(explosionSmall_image, 5, 5)
+   explosionSmall_textures = pyglet.image.TextureGrid(explosionSmall_grid)
+   explosionSmall_textures_list = explosionSmall_textures[:]
+   explosionSmall_frame_period = 0.05
+   explosionSmall_animation = pyglet.image.Animation.from_image_sequence(
+      explosionSmall_textures_list, explosionSmall_frame_period, loop=True)
+   duration = len(explosionSmall_textures_list) * explosionSmall_frame_period
+   explosionSmall_opacity = 128
+
    rubbleWallSpritesheet = pyglet.resource.image('images/TileObjectsRubbleWalls.png')
    rubbleWallGrid = Image.ImageGrid(rubbleWallSpritesheet, 8, 8)
    rubbleWallTextures = Image.TextureGrid(rubbleWallGrid)
