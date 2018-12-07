@@ -11,12 +11,14 @@ class Wyvern(cocos.layer.Layer):
    secondsPerFrame = 0.075
 
    # Create a texture atlas from the individual frames of the wyvern animations
+   # Wyvern textures
    wyvernBin = pyglet.image.atlas.TextureBin()
    wyvernTextures = []
    for i in range(0,24):
       name = "images/wyvernNE{}.png".format(i)
       wyvernTextures.append(wyvernBin.add(pyglet.image.load(name)))
 
+   # Shadow textures
    wyvernsTextures = []
    for i in range(0,24):
       names = "images/wyvernsNE{}.png".format(i)
